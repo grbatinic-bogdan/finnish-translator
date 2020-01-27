@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-interface ITranslate {
+export interface ITranslate {
   baseLanguageValue: string;
   hiddenTranslationValue: string;
+  reset: boolean;
 }
 
-export const Translate: React.FunctionComponent<ITranslate> = ({ baseLanguageValue, hiddenTranslationValue }) => {
+export const Translate: React.FunctionComponent<ITranslate> = ({
+  baseLanguageValue,
+  hiddenTranslationValue,
+  reset,
+}) => {
   const [translationValue, setTranslationValue] = useState('');
   const [isTranslated, setIsTranslated] = useState(false);
+
+  useEffect(() => {
+    setTranslationValue('');
+    setIsTranslated(false);
+  }, [reset]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
