@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export interface ITranslate {
+interface ITranslate {
   baseLanguageValue: string;
   hiddenTranslationValue: string;
   reset: boolean;

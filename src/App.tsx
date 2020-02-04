@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Translate } from 'src/components/Translate';
 import 'tachyons/css/tachyons.css';
-import { getWord } from './api/actions';
+import { getWord } from 'src/api/actions';
 
 const App = () => {
   const [baseLanguageValue, setBaseLanguageValue] = useState('');
@@ -11,14 +11,18 @@ const App = () => {
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
+    const doAsync = async () => {
+      getWord()
+        .then(data => {
+          setBaseLanguageValue(data.baseLanguageValue);
+          setHiddenTranslationValue(data.translationValue);
+          setReset(false);
+        })
+        .catch(err => setServerError(err.message));
+    };
+
     setReset(true);
-    getWord()
-      .then(data => {
-        setBaseLanguageValue(data.baseLanguageValue);
-        setHiddenTranslationValue(data.hiddenTranslationValue);
-        setReset(false);
-      })
-      .catch(err => setServerError(err.message));
+    doAsync();
   }, [fetchAgain]);
 
   const errorFromServer = serverError ? <div>{serverError}</div> : null;
