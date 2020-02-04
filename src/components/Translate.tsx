@@ -10,10 +10,12 @@ export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate,
   const [translationValue, setTranslationValue] = useState('');
   const [isTranslated, setIsTranslated] = useState(false);
   const { translationValue: hiddenTranslationValue, baseLanguageValue } = translate;
+  const [countErrors, setCountErrors] = useState(0);
 
   useEffect(() => {
     setTranslationValue('');
     setIsTranslated(false);
+    setCountErrors(0);
   }, [shouldResetTranslationData]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,8 +26,10 @@ export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate,
       const translationLetter = inputValue[currentIndex];
       const hiddenTranslationLetter = hiddenTranslationValue[currentIndex];
       lettersMatch = translationLetter === hiddenTranslationLetter;
+      if (!lettersMatch) {
+        setCountErrors(countErrors + 1);
+      }
     }
-
     if (lettersMatch || inputValue === '') {
       setTranslationValue(inputValue);
 
@@ -48,6 +52,7 @@ export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate,
           disabled={isTranslated}
           className={`ba ${isTranslated ? 'b--green' : 'b--light-silver'}`}
         />
+        {countErrors}
       </div>
     </>
   );
