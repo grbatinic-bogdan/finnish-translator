@@ -8,28 +8,35 @@ const App = () => {
   const [hiddenTranslationValue, setHiddenTranslationValue] = useState('');
   const [serverError, setServerError] = useState('');
   const [fetchAgain, setFetchAgain] = useState(false);
-  const [reset, setReset] = useState(false);
+  const [shouldReset, setShouldReset] = useState(false);
 
   useEffect(() => {
-    const doAsync = async () => {
-      getWord()
-        .then(data => {
-          setBaseLanguageValue(data.baseLanguageValue);
-          setHiddenTranslationValue(data.translationValue);
-          setReset(false);
-        })
-        .catch(err => setServerError(err.message));
-    };
-
-    setReset(true);
-    doAsync();
+    try {
+      const fetchTranslationData = async () => {
+        await getWord()
+          .then(data => {
+            setBaseLanguageValue(data.baseLanguageValue);
+            setHiddenTranslationValue(data.translationValue);
+            setShouldReset(false);
+          })
+          .catch(err => setServerError(err.message));
+      };
+      setShouldReset(true);
+      fetchTranslationData();
+    } catch (error) {
+      throw new Error("Couldn't fetch translation data from the server");
+    }
   }, [fetchAgain]);
 
   const errorFromServer = serverError ? <div>{serverError}</div> : null;
 
   return (
     <div>
-      <Translate reset={reset} baseLanguageValue={baseLanguageValue} hiddenTranslationValue={hiddenTranslationValue} />
+      <Translate
+        shouldReset={shouldReset}
+        baseLanguageValue={baseLanguageValue}
+        hiddenTranslationValue={hiddenTranslationValue}
+      />
       <button
         type="button"
         onClick={() => {

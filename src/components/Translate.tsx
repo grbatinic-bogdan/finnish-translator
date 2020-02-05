@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 interface ITranslate {
   baseLanguageValue: string;
   hiddenTranslationValue: string;
-  reset: boolean;
+  shouldReset: boolean;
 }
 
 export const Translate: React.FunctionComponent<ITranslate> = ({
   baseLanguageValue,
   hiddenTranslationValue,
-  reset,
+  shouldReset,
 }) => {
   const [translationValue, setTranslationValue] = useState('');
   const [isTranslated, setIsTranslated] = useState(false);
@@ -17,7 +17,7 @@ export const Translate: React.FunctionComponent<ITranslate> = ({
   useEffect(() => {
     setTranslationValue('');
     setIsTranslated(false);
-  }, [reset]);
+  }, [shouldReset]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
