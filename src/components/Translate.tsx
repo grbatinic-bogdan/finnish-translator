@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { ITranslate } from '../App';
 
-interface ITranslate {
-  baseLanguageValue: string;
-  hiddenTranslationValue: string;
+interface ITranslateProps {
+  translate: ITranslate;
   shouldReset: boolean;
 }
 
-export const Translate: React.FunctionComponent<ITranslate> = ({
-  baseLanguageValue,
-  hiddenTranslationValue,
-  shouldReset,
-}) => {
+export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate, shouldReset }) => {
   const [translationValue, setTranslationValue] = useState('');
   const [isTranslated, setIsTranslated] = useState(false);
+  const { hiddenTranslationValue, baseLanguageValue } = translate;
 
   useEffect(() => {
     setTranslationValue('');

@@ -3,9 +3,13 @@ import { Translate } from 'src/components/Translate';
 import 'tachyons/css/tachyons.css';
 import { getWord } from 'src/api/actions';
 
+export interface ITranslate {
+  baseLanguageValue: string;
+  hiddenTranslationValue: string;
+}
+
 const App = () => {
-  const [baseLanguageValue, setBaseLanguageValue] = useState('');
-  const [hiddenTranslationValue, setHiddenTranslationValue] = useState('');
+  const [translation, setTranslation] = useState({} as ITranslate);
   const [serverError, setServerError] = useState('');
   const [fetchAgain, setFetchAgain] = useState(false);
   const [shouldReset, setShouldReset] = useState(false);
@@ -15,8 +19,10 @@ const App = () => {
       const fetchTranslationData = async () => {
         await getWord()
           .then(data => {
-            setBaseLanguageValue(data.baseLanguageValue);
-            setHiddenTranslationValue(data.translationValue);
+            setTranslation({
+              baseLanguageValue: data.baseLanguageValue,
+              hiddenTranslationValue: data.translationValue,
+            });
             setShouldReset(false);
           })
           .catch(err => setServerError(err.message));
@@ -30,19 +36,14 @@ const App = () => {
 
   const errorFromServer = serverError ? <div>{serverError}</div> : null;
 
+  const onNewWordClick = () => {
+    setFetchAgain(!fetchAgain);
+  };
+
   return (
     <div>
-      <Translate
-        shouldReset={shouldReset}
-        baseLanguageValue={baseLanguageValue}
-        hiddenTranslationValue={hiddenTranslationValue}
-      />
-      <button
-        type="button"
-        onClick={() => {
-          setFetchAgain(!fetchAgain);
-        }}
-      >
+      <Translate shouldReset={shouldReset} translate={translation} />
+      <button type="button" onClick={onNewWordClick}>
         New Word
       </button>
       {errorFromServer}
