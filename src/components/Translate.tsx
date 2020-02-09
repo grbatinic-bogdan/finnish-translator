@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { ITranslate } from '../App';
+import { ITranslateWord } from 'src/api/actions';
 
 interface ITranslateProps {
-  translate: ITranslate;
-  shouldReset: boolean;
+  translate: ITranslateWord;
+  shouldResetTranslationData: boolean;
 }
 
-export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate, shouldReset }) => {
+export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate, shouldResetTranslationData }) => {
   const [translationValue, setTranslationValue] = useState('');
   const [isTranslated, setIsTranslated] = useState(false);
-  const { hiddenTranslationValue, baseLanguageValue } = translate;
+  const { translationValue: hiddenTranslationValue, baseLanguageValue } = translate;
 
   useEffect(() => {
     setTranslationValue('');
     setIsTranslated(false);
-  }, [shouldReset]);
+  }, [shouldResetTranslationData]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
@@ -35,8 +35,6 @@ export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate,
     }
   };
 
-  const borderName = isTranslated ? 'b--green' : 'b--light-silver';
-
   return (
     <>
       <p>Translate: {baseLanguageValue}</p>
@@ -48,7 +46,7 @@ export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate,
           value={translationValue}
           onChange={handleInputChange}
           disabled={isTranslated}
-          className={`ba ${borderName}`}
+          className={`ba ${isTranslated ? 'b--green' : 'b--light-silver'}`}
         />
       </div>
     </>

@@ -47,11 +47,10 @@ Required plugins:
 "eslint.enable": true,
 ```
 
-# .env file
+# Environment
 
-contains 2 variables:
+Create your own `.env` out of `.env-example`
 
 ```sh
-DEVELOPMENT_URL=http://<localhost_url>
-PRODUCTION_URL=https://<production_url>
+TRANSLATION_API_URL=your-translation-api-url
 ```
