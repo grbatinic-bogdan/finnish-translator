@@ -36,8 +36,8 @@ For best DX using [VS Code](https://code.visualstudio.com/) and utilizing [linti
 
 Required plugins:
 
-* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-* [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ```json
 "typescript.preferences.importModuleSpecifier": "non-relative",
@@ -47,3 +47,10 @@ Required plugins:
 "eslint.enable": true,
 ```
 
+# Environment
+
+Create your own `.env` out of `.env-example`
+
+```sh
+TRANSLATION_API_URL=your-translation-api-url
+```
