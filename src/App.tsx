@@ -1,40 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Translate } from 'src/components/Translate';
 import 'tachyons/css/tachyons.css';
+import { Translate } from 'src/components/Translate';
 import { getWord, ITranslateWord } from 'src/api/actions';
+import { RemoteSuspense } from 'ts-remote-data-react';
+import RemoteData from 'ts-remote-data';
 
 const App = () => {
-  const [translation, setTranslation] = useState({} as ITranslateWord);
-  const [serverError, setServerError] = useState('');
-  const [fetchAgain, setFetchAgain] = useState(false);
-  const [shouldResetTranslationData, setshouldResetTranslationData] = useState(false);
+  const [translationRemoteData, setTranslation] = useState<RemoteData<ITranslateWord>>(RemoteData.NOT_ASKED);
+
+  async function fetchNewTranslation() {
+    try {
+      setTranslation(RemoteData.LOADING);
+      const data = await getWord();
+      setTranslation(data);
+    } catch (error) {
+      setTranslation(RemoteData.failWith("Couldn't fetch translation data from the server"));
+    }
+  }
 
   useEffect(() => {
-    try {
-      const fetchTranslationData = async () => {
-        const data = await getWord();
-        setTranslation(data);
-        setshouldResetTranslationData(false);
-      };
-      setshouldResetTranslationData(true);
-      fetchTranslationData();
-    } catch (error) {
-      setServerError("Couldn't fetch translation data from the server");
-    }
-  }, [fetchAgain]);
+    fetchNewTranslation();
+  }, []);
 
   const onNewWordClick = () => {
-    setFetchAgain(!fetchAgain);
+    fetchNewTranslation();
   };
 
   return (
-    <div>
-      <Translate shouldResetTranslationData={shouldResetTranslationData} translate={translation} />
-      <button type="button" onClick={onNewWordClick}>
-        New Word
-      </button>
-      {serverError && <div>{serverError}</div>}
-    </div>
+    <RemoteSuspense
+      data={translationRemoteData}
+      loadingFallback={<h1>Loading</h1>}
+      failureFallback={(error: string) => <h1>{error}</h1>}
+    >
+      {translation => (
+        <>
+          <Translate translate={translation} />
+          <button type="button" onClick={onNewWordClick}>
+            New Word
+          </button>
+        </>
+      )}
+    </RemoteSuspense>
   );
 };
 

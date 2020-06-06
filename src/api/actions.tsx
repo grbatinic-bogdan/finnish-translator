@@ -2,7 +2,7 @@ import { v1ApiClient } from 'src/api/api';
 
 export interface ITranslateWord {
   baseLanguageValue: string;
-  translationValue: string;
+  translationValues: string[];
 }
 
 export const getWord = async (): Promise<ITranslateWord> => {
