@@ -3,20 +3,20 @@ import { ITranslateWord } from 'src/api/actions';
 
 interface ITranslateProps {
   translate: ITranslateWord;
-  shouldResetTranslationData: boolean;
 }
 
-export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate, shouldResetTranslationData }) => {
+export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate }) => {
   const [translationValue, setTranslationValue] = useState('');
   const [isTranslated, setIsTranslated] = useState(false);
-  const { translationValue: hiddenTranslationValue, baseLanguageValue } = translate;
+  const { translationValues, baseLanguageValue } = translate;
+  const hiddenTranslationValue = translationValues[0];
   const [errorCounter, setErrorCounter] = useState(0);
 
   useEffect(() => {
     setTranslationValue('');
     setIsTranslated(false);
     setErrorCounter(0);
-  }, [shouldResetTranslationData]);
+  }, [translate]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
@@ -52,7 +52,7 @@ export const Translate: React.FunctionComponent<ITranslateProps> = ({ translate,
           disabled={isTranslated}
           className={`ba ${isTranslated ? 'b--green' : 'b--light-silver'}`}
         />
-        {countErrors}
+        <p>Number of errors you made {errorCounter}</p>
       </div>
     </>
   );
