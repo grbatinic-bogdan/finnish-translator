@@ -12,6 +12,9 @@
     "build-prod": "parcel build src/index.html"
   },
   "dependencies": {
+    "@material-ui/core": "4.10.1",
+    "@material-ui/icons": "4.9.1",
+    "@material-ui/styles": "4.10.0",
     "axios": "^0.19.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -35,7 +38,6 @@
     "eslint-plugin-react": "7.20.0",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
-    "tachyons": "4.12.0",
     "typescript": "3.9.5"
   },
   "alias": {

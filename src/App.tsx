@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import 'tachyons/css/tachyons.css';
 import { Translate } from 'src/components/Translate';
 import { getWord, ITranslateWord } from 'src/api/actions';
 import { RemoteSuspense } from 'ts-remote-data-react';
 import RemoteData from 'ts-remote-data';
+import Button from '@material-ui/core/Button';
+import { Container, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles({
+  container: {
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+});
 
 const App = () => {
+  const cssClasses = useStyles();
   const [translationRemoteData, setTranslation] = useState<RemoteData<ITranslateWord>>(RemoteData.NOT_ASKED);
 
   async function fetchNewTranslation() {
@@ -33,12 +45,14 @@ const App = () => {
       failureFallback={(error: string) => <h1>{error}</h1>}
     >
       {translation => (
-        <>
-          <Translate translate={translation} />
-          <button type="button" onClick={onNewWordClick}>
-            New Word
-          </button>
-        </>
+        <Container maxWidth="sm" className={cssClasses.container}>
+          <Box>
+            <Translate translate={translation} />
+          </Box>
+          <Button color="primary" variant="contained" onClick={onNewWordClick}>
+            Fetch New Word
+          </Button>
+        </Container>
       )}
     </RemoteSuspense>
   );
